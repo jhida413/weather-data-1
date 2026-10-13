@@ -22,7 +22,7 @@ jobs:
         run: pip install requests pandas
 
       - name: Run weather script
-        run: python script/fetch_weather.py   # ← script に修正済み
+        run: python scripts/fetch_weather.py   # ← scripts に修正済み
 
       - name: Commit updated CSV
         run: |
