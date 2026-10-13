@@ -22,7 +22,16 @@ jobs:
         run: pip install requests pandas
 
       - name: Run weather script
-        run: python scripts/fetch_weather.py   # ← scripts に修正済み
+        run: python scripts/fetch_weather.py
+
+      - name: Commit updated CSV
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/weather.csv
+          git commit -m "Update weather data"
+          git push
+
 
       - name: Commit updated CSV
         run: |
