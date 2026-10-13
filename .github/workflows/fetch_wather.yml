@@ -1,0 +1,33 @@
+name: Fetch Weather Data
+
+on:
+  schedule:
+    - cron: "45 5 * * *"   # 毎日 05:45 JST
+  workflow_dispatch:        # 手動実行も可能
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install requests pandas
+
+      - name: Run weather script
+        run: python script/fetch_weather.py   # ← script に修正済み
+
+      - name: Commit updated CSV
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/weather.csv
+          git commit -m "Update weather data"
+          git push
