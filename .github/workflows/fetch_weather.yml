@@ -1,5 +1,8 @@
 name: Fetch Weather Data
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "45 5 * * *"   # 毎日 05:45 JST
