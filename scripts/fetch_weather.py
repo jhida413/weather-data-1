@@ -64,7 +64,7 @@ csv_path = "data/weather.csv"
 # -----------------------------
 # ⑤ 既存 CSV があれば結合
 # -----------------------------
-if os.path.exists(csv_path):
+if os.path.exists(csv_path) and os.path.getsize(csv_path) > 0:
     df_old = pd.read_csv(csv_path)
     df_all = pd.concat([df_old, df_new], ignore_index=True)
 else:
