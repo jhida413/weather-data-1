@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import os
 
 # -----------------------------
-# ① 取得する地点リスト（例）
+# ① 取得する地点リスト
 # -----------------------------
 LOCATIONS = [
     {"name": "Tokyo", "lat": 35.6895, "lon": 139.6917},
@@ -19,12 +19,13 @@ yesterday = today - timedelta(days=1)
 date_str = yesterday.strftime("%Y-%m-%d")
 
 # -----------------------------
-# ③ Open-Meteo API で昨日の気象データ取得
+# ③ Open-Meteo 過去データ API
 # -----------------------------
-def fetch_weather(lat, lon):
+def fetch_weather(lat, lon, date_str):
     url = (
-        "https://api.open-meteo.com/v1/forecast?"
+        "https://archive-api.open-meteo.com/v1/archive?"
         f"latitude={lat}&longitude={lon}"
+        f"&start_date={date_str}&end_date={date_str}"
         "&hourly=temperature_2m,relativehumidity_2m,windspeed_10m"
         "&timezone=Asia/Tokyo"
     )
@@ -33,12 +34,12 @@ def fetch_weather(lat, lon):
     return r.json()
 
 # -----------------------------
-# ④ CSV を作成 or 追記
+# ④ 昨日のデータを抽出
 # -----------------------------
 rows = []
 
 for loc in LOCATIONS:
-    data = fetch_weather(loc["lat"], loc["lon"])
+    data = fetch_weather(loc["lat"], loc["lon"], date_str)
     hourly = data["hourly"]
 
     for t, temp, rh, ws in zip(
@@ -47,14 +48,13 @@ for loc in LOCATIONS:
         hourly["relativehumidity_2m"],
         hourly["windspeed_10m"],
     ):
-        if t.startswith(date_str):  # 昨日分だけ抽出
-            rows.append({
-                "date": t,
-                "location": loc["name"],
-                "temperature": temp,
-                "humidity": rh,
-                "wind_speed": ws,
-            })
+        rows.append({
+            "date": t,
+            "location": loc["name"],
+            "temperature": temp,
+            "humidity": rh,
+            "wind_speed": ws,
+        })
 
 df_new = pd.DataFrame(rows)
 
@@ -76,3 +76,4 @@ else:
 df_all.to_csv(csv_path, index=False)
 
 print("Weather data updated:", date_str)
+print("Rows collected:", len(rows))
