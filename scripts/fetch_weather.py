@@ -1,26 +1,33 @@
-#fetch_weather.py_script-v2.1
+#fetch_weather.py_script-v3
 #v2.0:取得項目追加
 #v2.1:取得項目追加＋重複行の自動削除（最新行を残す）
+#v3: JST固定＋過去2日分取得＋重複削除（最新行を残す）
 
 import requests
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 
 # -----------------------------
-# ① 取得する地点リスト
+# ① JST の現在日付
+# -----------------------------
+JST = timezone(timedelta(hours=9))
+today = datetime.now(JST).date()
+
+# 過去2日分を取得（例：10/14 と 10/13）
+start_date = today - timedelta(days=2)
+end_date = today - timedelta(days=1)
+
+start_str = start_date.strftime("%Y-%m-%d")
+end_str = end_date.strftime("%Y-%m-%d")
+
+# -----------------------------
+# ② 取得する地点リスト
 # -----------------------------
 LOCATIONS = [
     {"name": "Tokyo", "lat": 35.6895, "lon": 139.6917},
     {"name": "Osaka", "lat": 34.6937, "lon": 135.5023},
 ]
-
-# -----------------------------
-# ② 昨日の日付（JST）
-# -----------------------------
-today = datetime.now()
-yesterday = today - timedelta(days=1)
-date_str = yesterday.strftime("%Y-%m-%d")
 
 # -----------------------------
 # ③ Open-Meteo 過去データ API（項目フルセット）
@@ -31,11 +38,11 @@ HOURLY_PARAMS = (
     "precipitation,dewpoint_2m,apparent_temperature"
 )
 
-def fetch_weather(lat, lon, date_str):
+def fetch_weather(lat, lon, start_str, end_str):
     url = (
         "https://archive-api.open-meteo.com/v1/archive?"
         f"latitude={lat}&longitude={lon}"
-        f"&start_date={date_str}&end_date={date_str}"
+        f"&start_date={start_str}&end_date={end_str}"
         f"&hourly={HOURLY_PARAMS}"
         "&timezone=Asia/Tokyo"
     )
@@ -44,12 +51,12 @@ def fetch_weather(lat, lon, date_str):
     return r.json()
 
 # -----------------------------
-# ④ 昨日のデータを抽出
+# ④ 過去2日分のデータを抽出
 # -----------------------------
 rows = []
 
 for loc in LOCATIONS:
-    data = fetch_weather(loc["lat"], loc["lon"], date_str)
+    data = fetch_weather(loc["lat"], loc["lon"], start_str, end_str)
     hourly = data["hourly"]
 
     for t, temp, rh, ws, pres, rad, cloud, prec, dew, app in zip(
@@ -103,5 +110,5 @@ df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
 # -----------------------------
 df_all.to_csv(csv_path, index=False)
 
-print("Weather data updated:", date_str)
+print("Weather data updated:", start_str, "to", end_str)
 print("Rows collected:", len(rows))
