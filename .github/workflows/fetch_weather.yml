@@ -34,3 +34,4 @@ jobs:
           git add data/weather.csv
           git commit -m "Update weather data"
           git push
+
