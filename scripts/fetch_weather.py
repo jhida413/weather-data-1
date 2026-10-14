@@ -1,5 +1,6 @@
-#fetch_weather.py_script-v2.0
+#fetch_weather.py_script-v2.1
 #v2.0:取得項目追加
+#v2.1:取得項目追加＋重複行の自動削除（最新行を残す）
 
 import requests
 import pandas as pd
@@ -92,10 +93,15 @@ else:
     df_all = df_new
 
 # -----------------------------
-# ⑥ 保存
+# ⑥ 重複行の削除（同じ日時＋地点は最新行だけ残す）
+# -----------------------------
+df_all = df_all.sort_values(by=["date", "location"])
+df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
+
+# -----------------------------
+# ⑦ 保存
 # -----------------------------
 df_all.to_csv(csv_path, index=False)
 
 print("Weather data updated:", date_str)
 print("Rows collected:", len(rows))
-
