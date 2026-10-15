@@ -1,12 +1,11 @@
-name: Fetch Weather Data v2 
-#v2:JSTからUTCに変更
+name: Fetch Weather Data v3.0
+#v2.0: JSTからUTCに変更
+#v3.0: 二段構え構成(trigger_drp01.yml設定)に伴いschedule行 を削除
 permissions:
   contents: write
 
 on:
-  schedule:
-    - cron: "45 20 * * *"   # JST 05:45（UTC 20:45）
-  workflow_dispatch:         # 手動実行も可能
+  workflow_dispatch:        # 手動実行 & トリガーからの呼び出し専用
 
 jobs:
   fetch:
@@ -32,7 +31,8 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add data/weather.csv
-          git commit -m "Update weather data"
-          git push
+          git commit -m "Update weather data" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+
 
 
