@@ -1,6 +1,5 @@
-name: Trigger DRP01 #v2.0
-#v2.0 書き込み権限追加
-
+name: Trigger DRP01 #v2.1
+#TriggerYAML name change
 permissions:
   contents: write
 
@@ -17,5 +16,5 @@ jobs:
       - name: Trigger DRP01 workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: fetch_weather.yml
+          workflow: "Fetch Weather Data"
           ref: main
