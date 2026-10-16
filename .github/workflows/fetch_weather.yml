@@ -1,11 +1,11 @@
-name: Fetch Weather Data #v3.0
-#v2.0: JSTからUTCに変更
-#v3.0: 二段構え構成(trigger_drp01.yml設定)に伴いschedule行 を削除
+name: Fetch Weather Data #v4.0
+
 permissions:
   contents: write
 
 on:
-  workflow_dispatch:        # 手動実行 & トリガーからの呼び出し専用
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   fetch:
