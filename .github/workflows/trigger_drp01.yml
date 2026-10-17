@@ -1,5 +1,5 @@
-name: Trigger DRP01 #v3.1
-#v3.1　権限追加  id-token: write , actions: read
+name: Trigger DRP01 #v3.2
+#v3.2 with: {} 追加
 
 permissions:
   contents: write
@@ -14,3 +14,4 @@ on:
 jobs:
   trigger:
     uses: ./.github/workflows/fetch_weather.yml
+    with: {}
