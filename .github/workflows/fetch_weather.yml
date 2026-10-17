@@ -1,5 +1,5 @@
-name: Fetch Weather Data #v4.1
-#v4.1 実行job名を変更　fetch > fetch_weather
+name: Fetch Weather Data #v5
+#v5 "dummy"追記
 
 permissions:
   contents: write
@@ -7,6 +7,10 @@ permissions:
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      dummy:
+        required: false
+        type: string
 
 jobs:
   fetch_weather:
@@ -34,5 +38,3 @@ jobs:
           git add data/weather.csv
           git commit -m "Update weather data" || echo "No changes to commit"
           git push || echo "Nothing to push"
-
-
