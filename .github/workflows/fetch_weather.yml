@@ -1,15 +1,10 @@
-name: Fetch Weather Data #v7
-#data形式指定削除
+name: Fetch Weather Data #v8
 
 permissions:
   contents: write
 
 on:
   workflow_call:
-    inputs:
-      dummy:
-        required: false
-
   workflow_dispatch:
 
 jobs:
