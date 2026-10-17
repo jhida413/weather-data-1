@@ -1,4 +1,5 @@
-name: Fetch Weather Data #v4.0
+name: Fetch Weather Data #v4.1
+#v4.1 実行job名を変更　fetch > fetch_weather
 
 permissions:
   contents: write
@@ -8,7 +9,7 @@ on:
   workflow_call:
 
 jobs:
-  fetch:
+  fetch_weather:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +34,5 @@ jobs:
           git add data/weather.csv
           git commit -m "Update weather data" || echo "No changes to commit"
           git push || echo "Nothing to push"
-
 
 
