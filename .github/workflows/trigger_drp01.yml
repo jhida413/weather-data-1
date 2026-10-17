@@ -1,9 +1,10 @@
 name: Trigger DRP01 #v3.1
-#v3.1　権限追加  id-token: write 
+#v3.1　権限追加  id-token: write , actions: read
 
 permissions:
   contents: write
   id-token: write
+  actions: read
   
 on:
   schedule:
