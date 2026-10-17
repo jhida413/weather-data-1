@@ -1,11 +1,11 @@
-name: Trigger DRP01 #v3.2
+name: Trigger DRP01 #v3.3
 #v3.3 dummy 追加
 
 permissions:
   contents: write
   id-token: write
   actions: read
-  
+
 on:
   schedule:
     - cron: "45 20 * * *"   # JST 05:45
