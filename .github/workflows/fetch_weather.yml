@@ -1,11 +1,11 @@
-name: Fetch Weather Data #v8
+name: Fetch Weather Data #v8.1
 
 permissions:
   contents: write
 
 on:
-  workflow_call:
-  workflow_dispatch:
+  workflow_call: {}
+  workflow_dispatch: {}
 
 jobs:
   fetch_weather:
