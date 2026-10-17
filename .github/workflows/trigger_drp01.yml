@@ -1,4 +1,4 @@
-name: Trigger DRP01 #v3.4
+name: Trigger DRP01 #v4
 
 permissions:
   contents: write
@@ -12,4 +12,4 @@ on:
 
 jobs:
   trigger:
-    uses: ./.github/workflows/fetch_weather.yml
+    uses: ./.github/workflows/fetch_weather_v2.yml
