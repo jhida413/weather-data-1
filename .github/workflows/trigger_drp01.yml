@@ -12,6 +12,6 @@ on:
 
 jobs:
   trigger:
-    uses: ./.github/workflows/fetch_weather_v2.yml
+    uses: ./.github/workflows/fetch_weather_main.yml
     secrets: inherit
     with: {}
