@@ -12,5 +12,5 @@ on:
 
 jobs:
   call-fetch:
-    uses: ./.github/workflows/fetch_weather_main.yml
+    uses: ./.github/workflows/fetch_weather_final.yml
     secrets: inherit
