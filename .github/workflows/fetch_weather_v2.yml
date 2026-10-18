@@ -6,7 +6,6 @@ permissions:
 on:
   workflow_call:
     secrets: {}
-  workflow_dispatch:
 
 jobs:
   fetch_weather:
