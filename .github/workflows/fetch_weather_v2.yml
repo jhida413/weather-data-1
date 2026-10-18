@@ -4,12 +4,13 @@ permissions:
   contents: write
 
 on:
-  workflow_dispatch:
   workflow_call:
     secrets: {}
+  workflow_dispatch:
 
 jobs:
   fetch_weather:
+    name: Fetch Weather Job
     runs-on: ubuntu-latest
 
     steps:
@@ -34,3 +35,4 @@ jobs:
           git add data/weather.csv
           git commit -m "Update weather data" || echo "No changes to commit"
           git push || echo "Nothing to push"
+
