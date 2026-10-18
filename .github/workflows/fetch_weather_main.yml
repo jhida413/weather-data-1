@@ -1,11 +1,13 @@
-name: Fetch Weather Data #v10
-
-permissions:
-  contents: write
+name: Fetch Weather Data #v12
 
 on:
   workflow_call:
-    secrets: {}
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+permissions:
+  contents: write
 
 jobs:
   fetch_weather:
