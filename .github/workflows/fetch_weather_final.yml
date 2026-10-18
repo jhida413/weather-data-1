@@ -1,7 +1,11 @@
-name: Fetch Weather Data #12
+name: Fetch Weather Data #13
 
 on:
   workflow_call:
+    inputs:
+      dummy:
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -33,3 +37,4 @@ jobs:
           git add data/weather.csv
           git commit -m "Update weather data" || echo "No changes to commit"
           git push || echo "Nothing to push"
+
