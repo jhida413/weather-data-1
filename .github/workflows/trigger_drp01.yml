@@ -11,6 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  trigger:
+  call-fetch:
     uses: ./.github/workflows/fetch_weather_main.yml
     secrets: inherit
