@@ -1,7 +1,8 @@
-#fetch_weather.py_script-v3
+#fetch_weather.py_script-v3.1
 #v2.0:取得項目追加
 #v2.1:取得項目追加＋重複行の自動削除（最新行を残す）
-#v3: JST固定＋過去2日分取得＋重複削除（最新行を残す）
+#v3.0: JST固定＋過去2日分取得＋重複削除（最新行を残す）
+#v3.1: 525日より古いデータを自動削除（DRP01長期運用対応）
 
 import requests
 import pandas as pd
@@ -106,9 +107,19 @@ df_all = df_all.sort_values(by=["date", "location"])
 df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
 
 # -----------------------------
-# ⑦ 保存
+# ⑦ 525日より古いデータを削除（DRP01 長期運用対応）
+# -----------------------------
+retention_days = 525
+threshold_date = today - timedelta(days=retention_days)
+
+df_all["date"] = pd.to_datetime(df_all["date"]).dt.date
+df_all = df_all[df_all["date"] >= threshold_date]
+
+# -----------------------------
+# ⑧ 保存
 # -----------------------------
 df_all.to_csv(csv_path, index=False)
 
 print("Weather data updated:", start_str, "to", end_str)
 print("Rows collected:", len(rows))
+print("Old data removed before:", threshold_date)
