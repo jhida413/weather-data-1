@@ -2,7 +2,7 @@ name: DRP01 Fetch Weather
 
 on:
   schedule:
-    - cron: "00 23 * * *"
+    - cron: "30 23 * * *"
   workflow_dispatch:
 
 permissions:
