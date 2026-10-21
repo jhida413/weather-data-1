@@ -1,8 +1,9 @@
-#fetch_weather.py_script-v3.1
+#fetch_weather.py_script-v3.2
 #v2.0:取得項目追加
 #v2.1:取得項目追加＋重複行の自動削除（最新行を残す）
 #v3.0: JST固定＋過去2日分取得＋重複削除（最新行を残す）
 #v3.1: 525日より古いデータを自動削除（DRP01長期運用対応）
+#v3.2: date列の混在フォーマットを format='mixed' で完全吸収（安定版）
 
 import requests
 import pandas as pd
@@ -107,12 +108,14 @@ df_all = df_all.sort_values(by=["date", "location"])
 df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
 
 # -----------------------------
-# ⑦ 525日より古いデータを削除（DRP01 長期運用対応）
+# ⑦ 525日より古いデータを削除（format='mixed' で安定化）
 # -----------------------------
 retention_days = 525
 threshold_date = today - timedelta(days=retention_days)
 
-df_all["date"] = pd.to_datetime(df_all["date"]).dt.date
+# ★ v3.2 の重要ポイント：混在フォーマットを完全吸収
+df_all["date"] = pd.to_datetime(df_all["date"], format='mixed').dt.date
+
 df_all = df_all[df_all["date"] >= threshold_date]
 
 # -----------------------------
