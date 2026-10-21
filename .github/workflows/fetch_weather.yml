@@ -1,5 +1,5 @@
 name: DRP01 Fetch Weather #v3
-#cron :3times per day [JST 3,9,15,21 ]
+#cron :4times per day [JST 3,9,15,21 ]
 on:
   schedule:
     - cron: "0 */6 * * *"
