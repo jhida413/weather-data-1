@@ -1,8 +1,8 @@
-name: DRP01 Fetch Weather
-
+name: DRP01 Fetch Weather #v3
+#cron :3times per day [JST 3,9,15,21 ]
 on:
   schedule:
-    - cron: "13 22 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
