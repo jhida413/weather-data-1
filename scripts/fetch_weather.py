@@ -112,7 +112,7 @@ df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
 # ⑦ 525日より古いデータを削除（format='mixed' で安定化）&（TIMESTAMPで保持）---v3.3
 # -----------------------------
 retention_days = 525
-threshold_date = today - timedelta(days=retention_days)
+threshold_date = (today - timedelta(days=retention_days)).replace(tzinfo=None)
 
 # ★ v3.2 の重要ポイント：混在フォーマットを完全吸収 &（TIMESTAMPで保持）---v3.3
 df_all["date"] = pd.to_datetime(df_all["date"], format='mixed')
@@ -123,11 +123,6 @@ df_all = df_all[df_all["date"] >= threshold_date]
 # ⑧ 保存
 # -----------------------------
 df_all.to_csv(csv_path, index=False)
-
-print("Weather data updated:", start_str, "to", end_str)
-print("Rows collected:", len(rows))
-print("Old data removed before:", threshold_date)
-
 
 print("Weather data updated:", start_str, "to", end_str)
 print("Rows collected:", len(rows))
