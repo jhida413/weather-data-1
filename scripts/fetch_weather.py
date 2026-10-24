@@ -1,4 +1,4 @@
-#fetch_weather.py_script-v3.4
+#fetch_weather.py_script-v3.5
 #v2.0:取得項目追加
 #v2.1:取得項目追加＋重複行の自動削除（最新行を残す）
 #v3.0: JST固定＋過去2日分取得＋重複削除（最新行を残す）
@@ -6,6 +6,7 @@
 #v3.2: date列の混在フォーマットを format='mixed' で完全吸収（安定版）
 #v3.3: v3.2の不具合修正　時間軸が日付化　→　日時に修正(Time Stamp 保持)
 #v3.4: date format をISO8601に修正（DRP02とともに統一）
+#v3.5: pandasの処理エラー解消のためthreshold_date を ISO8601 の「文字列」に変換
 
 import requests
 import pandas as pd
@@ -110,14 +111,15 @@ df_all = df_all.sort_values(by=["date", "location"])
 df_all = df_all.drop_duplicates(subset=["date", "location"], keep="last")
 
 # -----------------------------
-# ⑦ 525日より古いデータを削除（format='mixed' で安定化）&（TIMESTAMPで保持）---v3.3
+# ⑦ 525日より古いデータを削除（format='mixed' で安定化）&（TIMESTAMPで保持）---v3.3　→v3.5: threshold_date を ISO8601 の「文字列」に変換
 # -----------------------------
 retention_days = 525
 threshold_date = (today - timedelta(days=retention_days)).replace(tzinfo=None)
+threshold_date_str = threshold_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 # ★ v3.2 の重要ポイント：混在フォーマットを完全吸収 &（TIMESTAMPで保持）---v3.3　→v3.4にてISO8601フォーマットに修正
 df_all["date"] = pd.to_datetime(df_all["date"], format='mixed').dt.strftime("%Y-%m-%dT%H:%M:%S")
-df_all = df_all[df_all["date"] >= threshold_date]
+df_all = df_all[df_all["date"] >= threshold_date_str]
 
 
 # -----------------------------
